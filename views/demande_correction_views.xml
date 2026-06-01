@@ -32,7 +32,9 @@
       <form string="Demande de correction" class="ar_demande_correction_form">
         <header>
           <field name="state" widget="statusbar" statusbar_visible="draft,n1,sup_log,msc,mfin,md,v5,valide,refuse"/>
+        </header>
 
+        <header>
           <button name="action_soumettre"
                   type="object"
                   string="Soumettre"
