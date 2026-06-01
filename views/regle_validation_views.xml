@@ -1,0 +1,48 @@
+<odoo>
+  <record id="view_ar_regle_validation_list" model="ir.ui.view">
+    <field name="name">ar.regle.validation.list</field>
+    <field name="model">ar.regle.validation</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="ajustement"/>
+        <field name="montant_min_mad"/>
+        <field name="montant_max_mad"/>
+        <field name="validateur1_id"/>
+        <field name="validateur2_id"/>
+        <field name="validateur3_id"/>
+        <field name="validateur4_id"/>
+        <field name="validateur5_id"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_ar_regle_validation_form" model="ir.ui.view">
+    <field name="name">ar.regle.validation.form</field>
+    <field name="model">ar.regle.validation</field>
+    <field name="arch" type="xml">
+      <form string="Règle de validation">
+        <sheet>
+          <group string="Paramétrage">
+            <field name="ajustement" required="1" placeholder="Sélectionner un ajustement..."/>
+            <field name="montant_min_mad" required="1"/>
+            <field name="montant_max_mad" placeholder="Laisser vide = sans limite"/>
+          </group>
+
+          <group string="Affectation des validateurs">
+            <field name="validateur1_id" required="1"/>
+            <field name="validateur2_id" required="1"/>
+            <field name="validateur3_id"/>
+            <field name="validateur4_id"/>
+            <field name="validateur5_id"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_ar_regle_validation" model="ir.actions.act_window">
+    <field name="name">Règles de validation</field>
+    <field name="res_model">ar.regle.validation</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

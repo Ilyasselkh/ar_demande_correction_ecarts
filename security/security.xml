@@ -1,0 +1,103 @@
+<odoo>
+
+  <record id="module_category_ar_ecarts" model="ir.module.category">
+    <field name="name">Correction des ecarts</field>
+    <field name="description">Gestion des droits du module Correction des ecarts</field>
+    <field name="sequence">20</field>
+  </record>
+
+  <record id="privilege_ar_ecarts_param" model="res.groups.privilege">
+    <field name="name">AR - Correction ecarts : Parametrage</field>
+    <field name="category_id" ref="module_category_ar_ecarts"/>
+    <field name="sequence">10</field>
+  </record>
+
+  <record id="privilege_ar_ecarts_admin" model="res.groups.privilege">
+    <field name="name">AR - Correction ecarts : Admin</field>
+    <field name="category_id" ref="module_category_ar_ecarts"/>
+    <field name="sequence">20</field>
+  </record>
+
+  <record id="group_ar_ecarts_param" model="res.groups">
+    <field name="name">Actif</field>
+    <field name="privilege_id" ref="privilege_ar_ecarts_param"/>
+    <field name="sequence">10</field>
+  </record>
+
+  <record id="group_ar_ecarts_admin" model="res.groups">
+    <field name="name">Actif</field>
+    <field name="privilege_id" ref="privilege_ar_ecarts_admin"/>
+    <field name="sequence">10</field>
+    <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_ar_ecarts_param'))]"/>
+  </record>
+
+  <record id="rule_ar_demande_correction_concerne" model="ir.rule">
+    <field name="name">Demande visible aux personnes concernees</field>
+    <field name="model_id" ref="model_ar_demande_correction"/>
+    <field name="global" eval="False"/>
+    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    <field name="domain_force">
+      ['|','|','|','|','|',
+        ('demandeur_id','=',user.id),
+        ('manager_n1_id','=',user.id),
+        ('validateur1_id','=',user.id),
+        ('validateur2_id','=',user.id),
+        ('validateur3_id','=',user.id),
+        '|',('validateur4_id','=',user.id),
+           ('validateur5_id','=',user.id)
+      ]
+    </field>
+  </record>
+
+  <record id="rule_ar_demande_correction_admin_read_all" model="ir.rule">
+    <field name="name">Admin - consulter toutes les demandes</field>
+    <field name="model_id" ref="model_ar_demande_correction"/>
+    <field name="groups" eval="[(4, ref('group_ar_ecarts_admin'))]"/>
+    <field name="domain_force">[('id', '!=', False)]</field>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="False"/>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_unlink" eval="False"/>
+  </record>
+
+  <record id="rule_ar_demande_correction_line_concerne" model="ir.rule">
+    <field name="name">Lignes visibles si demande visible</field>
+    <field name="model_id" ref="model_ar_demande_correction_line"/>
+    <field name="global" eval="False"/>
+    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    <field name="domain_force">
+      ['|','|','|','|','|',
+        ('demande_id.demandeur_id','=',user.id),
+        ('demande_id.manager_n1_id','=',user.id),
+        ('demande_id.validateur1_id','=',user.id),
+        ('demande_id.validateur2_id','=',user.id),
+        ('demande_id.validateur3_id','=',user.id),
+        '|',('demande_id.validateur4_id','=',user.id),
+           ('demande_id.validateur5_id','=',user.id)
+      ]
+    </field>
+  </record>
+
+  <record id="rule_ar_demande_correction_line_admin_read_all" model="ir.rule">
+    <field name="name">Admin - consulter toutes les lignes</field>
+    <field name="model_id" ref="model_ar_demande_correction_line"/>
+    <field name="groups" eval="[(4, ref('group_ar_ecarts_admin'))]"/>
+    <field name="domain_force">[('id', '!=', False)]</field>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="False"/>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_unlink" eval="False"/>
+  </record>
+
+  <record id="rule_ar_ecarts_access_only" model="ir.rule">
+    <field name="name">Acces Correction ecarts uniquement</field>
+    <field name="model_id" ref="model_ar_demande_correction"/>
+    <field name="global" eval="True"/>
+    <field name="domain_force">[('id','!=',False)]</field>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+  </record>
+
+</odoo>

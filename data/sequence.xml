@@ -1,0 +1,8 @@
+<odoo>
+  <record id="seq_ar_demande_correction" model="ir.sequence">
+    <field name="name">Demande Correction Ecarts</field>
+    <field name="code">ar.demande.correction</field>
+    <field name="prefix">LOG-AS-</field>
+    <field name="padding">4</field>
+  </record>
+</odoo>

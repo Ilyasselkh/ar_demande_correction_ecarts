@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+  <record id="mail_template_ecarts_to_manager_n1" model="mail.template">
+    <field name="name">Demande d'ajustement - Validation N+1</field>
+    <field name="model_id" ref="model_ar_demande_correction"/>
+    <field name="subject">[Demande d'ajustement] {{ object.name }} - Validation requise</field>
+    <field name="email_from">Demande d'ajustement &lt;AS-ARMaroc@araymond.com&gt;</field>
+    <field name="email_to"></field>
+    <field name="body_html" type="html">
+      <div>
+          <p>Bonjour,</p>
+          <p>Une demande de correction nécessite votre validation N+1.</p>
+
+          <p><b>Référence :</b> <t t-out="object.name"/></p>
+                    <p><b>Ajustement de Stock :</b> <t t-out="object.ajustement"/></p>
+
+          <p><b>Demandeur :</b> <t t-out="object.demandeur_id.name"/></p>
+          <p><b>Total :</b> <t t-out="object.total_mad"/> MAD</p>
+
+          <t t-set="base_url" t-value="object.get_base_url()"/>
+          <div style="margin: 16px 0px;">
+            <a t-attf-href="{{ base_url }}/web#id={{ object.id }}&amp;model=ar.demande.correction&amp;view_type=form"
+               style="background-color:#1481f4;padding:8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;">
+              Ouvrir la demande
+            </a>
+          </div>
+        </div>
+    </field>
+  </record>
+
+    <!-- 1) Envoyer au prochain validateur -->
+    <record id="mail_template_ecarts_to_validator" model="mail.template">
+      <field name="name">Demande d'ajustement - Validation requise</field>
+      <field name="model_id" ref="model_ar_demande_correction"/>
+      <field name="subject">[Demande d'ajustement] {{ object.name }} - Validation requise</field>
+      <field name="email_from">Demande d'ajustement &lt;AS-ARMaroc@araymond.com&gt;</field>
+      <field name="email_to"></field>
+      <field name="body_html" type="html">
+        <div>
+          <p>Bonjour,</p>
+          <p>Une demande de correction nécessite votre validation.</p>
+
+          <p><b>Référence :</b> <t t-out="object.name"/></p>
+          <p><b>Ajustement de Stock :</b> <t t-out="object.ajustement"/></p>
+          <p><b>Demandeur :</b> <t t-out="object.demandeur_id.name"/></p>
+          <p><b>Total :</b> <t t-out="object.total_mad"/> MAD</p>
+
+          <t t-set="base_url" t-value="object.get_base_url()"/>
+          <div style="margin: 16px 0px;">
+            <a t-attf-href="{{ base_url }}/web#id={{ object.id }}&amp;model=ar.demande.correction&amp;view_type=form"
+               style="background-color:#1481f4;padding:8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;">
+              Ouvrir la demande
+            </a>
+          </div>
+        </div>
+      </field>
+    </record>
+
+    <!-- 2) Demande validée -> demandeur -->
+    <record id="mail_template_ecarts_validated_to_demandeur" model="mail.template">
+      <field name="name">Demande d'ajustement - Demande validée (Demandeur)</field>
+      <field name="model_id" ref="model_ar_demande_correction"/>
+      <field name="subject">[Demande d'ajustement] {{ object.name }} - Demande validée</field>
+      <field name="email_from">Demande d'ajustement &lt;AS-ARMaroc@araymond.com&gt;</field>
+      <field name="email_to"></field>
+      <field name="body_html" type="html">
+        <div>
+          <p>Bonjour,</p>
+          <p>Votre demande <b><t t-out="object.name"/></b> a été <b>validée</b>.</p>
+
+          <p><b>Référence :</b> <t t-out="object.name"/></p>
+          <p><b>Ajustement de Stock :</b> <t t-out="object.ajustement"/></p>
+          <p><b>Total :</b> <t t-out="object.total_mad"/> MAD</p>
+
+          <t t-set="base_url" t-value="object.get_base_url()"/>
+          <div style="margin: 16px 0px;">
+            <a t-attf-href="{{ base_url }}/web#id={{ object.id }}&amp;model=ar.demande.correction&amp;view_type=form"
+               style="background-color:#16a34a;padding:8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;">
+              Voir la demande
+            </a>
+          </div>
+        </div>
+      </field>
+    </record>
+
+    <!-- 3) Demande refusée -> demandeur -->
+    <record id="mail_template_ecarts_refused_to_demandeur" model="mail.template">
+      <field name="name">Demande d'ajustement - Demande refusée (Demandeur)</field>
+      <field name="model_id" ref="model_ar_demande_correction"/>
+      <field name="subject">[Demande d'ajustement] {{ object.name }} - Demande refusée</field>
+      <field name="email_from">Demande d'ajustement &lt;AS-ARMaroc@araymond.com&gt;</field>
+      <field name="email_to"></field>
+      <field name="body_html" type="html">
+        <div>
+          <p>Bonjour,</p>
+          <p>Votre demande <b><t t-out="object.name"/></b> a été <b>refusée</b>.</p>
+
+          <p><b>Référence :</b> <t t-out="object.name"/></p>
+                    <p><b>Ajustement de Stock :</b> <t t-out="object.ajustement"/></p>
+
+          <p><b>Total :</b> <t t-out="object.total_mad"/> MAD</p>
+
+          <t t-set="base_url" t-value="object.get_base_url()"/>
+          <div style="margin: 16px 0px;">
+            <a t-attf-href="{{ base_url }}/web#id={{ object.id }}&amp;model=ar.demande.correction&amp;view_type=form"
+               style="background-color:#dc2626;padding:8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;">
+              Voir la demande
+            </a>
+          </div>
+        </div>
+      </field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+  <record id="view_res_config_settings_ar_ecarts" model="ir.ui.view">
+    <field name="name">res.config.settings.ar.ecarts</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form" position="inside">
+        <app string="Correction écarts" name="ar_demande_correction_ecarts">
+          <block title="Correction des écarts">
+            <setting string="Taux EUR" help="Ex: 11.0 = 11 MAD pour 1 €">
+              <field name="ar_taux_eur"/>
+            </setting>
+          </block>
+        </app>
+      </xpath>
+    </field>
+  </record>
+</odoo>

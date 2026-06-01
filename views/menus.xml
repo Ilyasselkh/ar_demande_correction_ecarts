@@ -1,0 +1,54 @@
+<odoo>
+
+  <!-- Menu principal -->
+  <menuitem id="menu_ar_ecarts_root"
+            name="AR Ajustement De Stock"
+            sequence="10"/>
+
+  <!-- 4) Paramétrage -->
+  <menuitem id="menu_ar_ecarts_param"
+            name="Paramétrage"
+            parent="menu_ar_ecarts_root"
+            groups="ar_demande_correction_ecarts.group_ar_ecarts_param"
+            sequence="40"/>
+
+  <menuitem id="menu_ar_ecarts_regles"
+            name="Règles de validation"
+            parent="menu_ar_ecarts_param"
+            action="ar_demande_correction_ecarts.action_ar_regle_validation"
+            groups="ar_demande_correction_ecarts.group_ar_ecarts_param"
+            sequence="10"/>
+
+  <!-- 1) Demande -->
+  <menuitem id="menu_ar_ecarts_demande"
+            name="Demande de correction"
+            parent="menu_ar_ecarts_root"
+            action="ar_demande_correction_ecarts.action_ar_demande_correction"
+            sequence="10"/>
+
+  <!-- 2) Documentation -->
+  <menuitem id="menu_ar_ecarts_doc"
+            name="Documentation"
+            parent="menu_ar_ecarts_root"
+            action="ar_demande_correction_ecarts.action_ar_demande_correction_documentation"
+            sequence="20"/>
+
+  <!-- 3) Archives -->
+  <menuitem id="menu_ar_ecarts_archives"
+            name="Archives"
+            parent="menu_ar_ecarts_root"
+            sequence="30"/>
+
+  <menuitem id="menu_ar_ecarts_archives_val"
+            name="Validée"
+            parent="menu_ar_ecarts_archives"
+            action="ar_demande_correction_ecarts.action_ar_archives_validees"
+            sequence="10"/>
+
+  <menuitem id="menu_ar_ecarts_archives_ref"
+            name="Refusée"
+            parent="menu_ar_ecarts_archives"
+            action="ar_demande_correction_ecarts.action_ar_archives_refusees"
+            sequence="20"/>
+
+</odoo>

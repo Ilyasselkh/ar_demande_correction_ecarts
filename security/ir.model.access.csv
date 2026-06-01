@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_ar_regle_validation_admin,ar.regle.validation admin,model_ar_regle_validation,base.group_system,1,1,1,1
+access_ar_regle_validation_ar_ecarts_admin,ar.regle.validation ar ecarts admin,model_ar_regle_validation,ar_demande_correction_ecarts.group_ar_ecarts_admin,1,1,1,1
+access_ar_regle_validation_param,ar.regle.validation param,model_ar_regle_validation,ar_demande_correction_ecarts.group_ar_ecarts_param,1,1,1,0
+
+access_ar_demande_correction_user,ar.demande.correction user,model_ar_demande_correction,base.group_user,1,1,1,0
+access_ar_demande_correction_line_user,ar.demande.correction.line user,model_ar_demande_correction_line,base.group_user,1,1,1,0
+
+access_ar_demande_correction_doc_read,ar.demande.correction.documentation read,model_ar_demande_correction_documentation,base.group_user,1,0,0,0
+access_ar_demande_correction_doc_admin,ar.demande.correction.documentation admin,model_ar_demande_correction_documentation,base.group_system,1,1,1,1
+access_ar_demande_correction_doc_ar_ecarts_admin,ar.demande.correction.documentation ar ecarts admin,model_ar_demande_correction_documentation,ar_demande_correction_ecarts.group_ar_ecarts_admin,1,1,1,1
+
+access_ar_regle_validation_read,ar.regle.validation read,model_ar_regle_validation,base.group_user,1,0,0,0

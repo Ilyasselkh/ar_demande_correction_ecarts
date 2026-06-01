@@ -1,0 +1,23 @@
+<odoo>
+  <record id="view_users_form_inherit_ar_ecarts" model="ir.ui.view">
+    <field name="name">res.users.form.inherit.ar.ecarts</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//page[@name='access_rights']" position="inside">
+        <group string="Correction des écarts - Accès et rôles">
+          <field name="x_access_correction_ecarts"/>
+          <separator string="Rôles de validation"/>
+          <field name="x_role_sup_log"/>
+          <field name="x_role_msc"/>
+          <field name="x_role_mfin"/>
+          <field name="x_role_md"/>
+          <field name="x_role_v5"/>
+          <field name="x_role_n1"/>
+        </group>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>

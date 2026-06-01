@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_ar_demande_correction_decision_wizard_form" model="ir.ui.view">
+    <field name="name">ar.demande.correction.decision.wizard.form</field>
+    <field name="model">ar.demande.correction.decision.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Confirmation" class="ar_dc_decision_wizard">
+        <field name="demande_id" invisible="1"/>
+        <field name="action_type" invisible="1"/>
+
+        <div class="ar_dc_wizard_message" invisible="action_type != 'validate'">
+          <div class="ar_dc_wizard_icon ar_dc_wizard_icon_validate">OK</div>
+          <h2>Confirmer la validation</h2>
+          <p>Voulez-vous vraiment valider cette demande ?</p>
+        </div>
+
+        <div class="ar_dc_wizard_message" invisible="action_type != 'refuse'">
+          <div class="ar_dc_wizard_icon ar_dc_wizard_icon_refuse">!</div>
+          <h2>Confirmer le refus</h2>
+          <p>Voulez-vous vraiment refuser cette demande ?</p>
+        </div>
+
+        <footer>
+          <button name="action_confirm"
+                  type="object"
+                  string="Confirmer"
+                  class="btn-primary"/>
+          <button string="Annuler"
+                  special="cancel"
+                  class="btn-secondary"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>
