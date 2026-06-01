@@ -1,21 +1,19 @@
-# AR - Demande d'Ajustement de Stock
+# AR - Demande Ajustement de Stock
 
+Module Odoo pour declarer et valider les corrections ecarts de stock: ecarts inventaire, consommation manuelle ou scrap.
 
-> Documentation du module de correction des ?carts de stock.
+## Objectif
 
+Cette documentation explique le perimetre fonctionnel du module, les roles utilisateurs, le workflow, la configuration et les principaux objets techniques.
 
-## Vue d?ensemble
+## Utilisateurs concernes
 
-Ce module encadre les demandes d?ajustement de stock li?es aux ?carts d?inventaire, consommations manuelles ou scrap. Il calcule les valeurs, s?lectionne une r?gle de validation et fait avancer la demande dans une cha?ne multi-niveaux.
+- Demandeur
+- Manager N+1
+- Validateurs metier
+- Administrateur Odoo
 
-## Utilisateurs concern?s
-
-- Demandeur : d?clare l??cart et les lignes.
-- Manager N+1 : premier contr?le.
-- Validateurs m?tier : logistique, finance, MD ou niveaux configur?s.
-- Administrateur : configure r?gles de validation et acc?s.
-
-## Workflow m?tier
+## Workflow metier
 
 1. Nouvelle demande
 2. Validation N+1
@@ -23,88 +21,82 @@ Ce module encadre les demandes d?ajustement de stock li?es aux ?carts d?inventai
 4. Validateur 2
 5. Validateur 3
 6. Validateur 4
-7. Validateur 5 si n?cessaire
-8. Valid?e
-9. Refus?e
+7. Validateur 5 si necessaire
+8. Validee
+9. Refusee
 
-## Fonctionnement op?rationnel
+## Fonctionnement operationnel
 
-- Cr?er une demande et choisir le type d?ajustement.
-- Ajouter les lignes d??cart avec r?f?rence, quantit? et valeur.
-- Soumettre la demande.
-- Valider ?tape par ?tape selon la r?gle appliqu?e.
-- Refuser avec motif si n?cessaire.
-- Imprimer ou consulter le rapport.
+- Creer une demande.
+- Choisir le type ajustement.
+- Ajouter les lignes ecart.
+- Soumettre.
+- Valider selon les niveaux requis.
+- Refuser avec motif si necessaire.
 
-## Configuration recommand?e
+## Configuration recommandee
 
-- Cr?er les r?gles de validation avec les validateurs et niveaux requis.
-- V?rifier la relation utilisateur-employ?-manager.
-- Configurer la s?quence, templates et rapport.
-- Contr?ler les droits d?acc?s.
+- Creer les regles de validation.
+- Renseigner les validateurs.
+- Verifier utilisateur, employe et manager.
+- Configurer sequence, templates mail et rapport.
 
-## D?pendances Odoo
+## Dependances Odoo
 
 - `base`
 - `mail`
 - `hr`
 
-## Mod?les techniques
+## Modeles principaux
 
-- `ar.demande.correction` : Demande de correction des écarts (`models/demande_correction.py`)
-- `ar.demande.correction.line` : Lignes - Demande correction (`models/demande_correction.py`)
-- `ar.demande.correction.decision.wizard` : Confirmation validation/refus demande de correction (`models/demande_correction_decision_wizard.py`)
-- `ar.demande.correction.documentation` : Correction écarts - Documentation (`models/demande_correction_documentation.py`)
-- `ar.regle.validation` : Règles de validation - Correction écarts (`models/regle_validation.py`)
+- `ar.demande.correction`
+- `ar.demande.correction.line`
+- `ar.regle.validation`
+- `ar.demande.correction.decision.wizard`
+- `ar.demande.correction.documentation`
 
-## ?tats d?tect?s dans le code
+## Structure importante du module
 
-- `models/demande_correction.py` : `draft` (Nouvelle demande), `n1` (Validation N+1), `sup_log` (Validateur 1), `msc` (Validateur 2), `mfin` (Validateur 3), `md` (Validateur 4), `v5` (Validateur 5), `valide` (Validée), `refuse` (Refusée)
-
-## Actions serveur principales
-
-- `action_soumettre` (`models/demande_correction.py`)
-- `action_valider` (`models/demande_correction.py`)
-- `action_refuser` (`models/demande_correction.py`)
-- `action_confirm` (`models/demande_correction_decision_wizard.py`)
-
-## Fichiers charg?s par le manifest
-
-- `security/security.xml`
 - `security/ir.model.access.csv`
+- `security/security.xml`
+- `data/mail_templates.xml`
 - `data/report_demande_correction.xml`
 - `data/sequence.xml`
-- `data/mail_templates.xml`
-- `views/regle_validation_views.xml`
-- `views/demande_correction_views.xml`
+- `views/demande_correction_decision_wizard_views.xml`
 - `views/demande_correction_documentation_views.xml`
+- `views/demande_correction_views.xml`
+- `views/menus.xml`
+- `views/regle_validation_views.xml`
 - `views/res_config_settings_views.xml`
 - `views/res_users_views.xml`
-- `views/menus.xml`
+- `models/__init__.py`
+- `models/demande_correction.py`
+- `models/demande_correction_decision_wizard.py`
+- `models/demande_correction_documentation.py`
+- `models/regle_validation.py`
+- `models/res_config_settings.py`
+- `models/res_users.py`
 
-## S?curit? et droits
+## Securite
 
-Le module s?appuie sur les fichiers suivants pour d?finir les groupes, r?gles d?enregistrement et droits d?acc?s :
+Les droits sont geres par les fichiers du dossier `security`. Il faut verifier les groupes, les regles enregistrement et les acces CSV apres installation ou modification du module.
 
-- `security/ir.model.access.csv`
-- `security/security.xml`
+## Notifications et suivi
 
-## Assets et interface
+Les modules qui dependent de `mail` utilisent le chatter Odoo pour tracer les changements. Les templates mail presents dans le dossier `data` servent a notifier les acteurs concernes par les transitions.
 
-- `static/src/js/demande_correction_animations.js`
-- `static/src/scss/demande_correction_form.scss`
+## Installation
 
-## Bonnes pratiques d?utilisation
-
-- V?rifier que chaque utilisateur Odoo est li? au bon employ? lorsque le module d?pend de `hr.employee`.
-- Tester le workflow avec un dossier de test avant utilisation en production.
-- Contr?ler les groupes de s?curit? apr?s installation afin que seuls les bons r?les voient les boutons de validation.
-- Garder les templates e-mail et rapports align?s avec les proc?dures internes.
-- Sauvegarder la base avant toute modification structurelle du module.
+1. Copier le module dans le dossier addons Odoo.
+2. Redemarrer le serveur Odoo si necessaire.
+3. Mettre a jour la liste des applications.
+4. Installer ou mettre a jour le module.
+5. Verifier les droits utilisateurs et tester un dossier de bout en bout.
 
 ## Maintenance
 
-- Les ?volutions fonctionnelles doivent ?tre ajout?es dans les mod?les Python, les vues XML et les r?gles de s?curit? correspondantes.
-- Apr?s modification des vues, mettre ? jour le module depuis Odoo ou red?marrer le serveur selon le type de changement.
-- Apr?s modification des assets, vider le cache navigateur et recompiler les assets si n?cessaire.
-- Toute nouvelle ?tape de workflow doit ?tre accompagn?e des droits, boutons, notifications et filtres correspondants.
+- Ajouter toute nouvelle etape a la fois dans le modele Python, les vues XML, les droits et les notifications.
+- Tester les workflows avec plusieurs roles utilisateurs.
+- Mettre a jour les rapports et templates mail quand la procedure interne change.
+- Eviter de modifier les donnees de production sans sauvegarde.
+- Documenter toute evolution fonctionnelle dans ce README.
