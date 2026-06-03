@@ -396,6 +396,10 @@ class ARDemandeCorrection(models.Model):
     # =========================================================
     # Actions workflow
     # =========================================================
+    def _post_workflow_trace(self, message):
+        self.ensure_one()
+        self.message_post(body=message % self.env.user.name)
+
     def action_soumettre(self):
         self._check_access_module()
 
@@ -431,6 +435,7 @@ class ARDemandeCorrection(models.Model):
                     "ar_demande_correction_ecarts.mail_template_ecarts_to_manager_n1",
                     rec.manager_n1_id
                 )
+            rec._post_workflow_trace(_("Demande soumise par %s. Circuit de validation lance."))
 
     def action_valider(self):
         self._check_access_module()
@@ -451,6 +456,7 @@ class ARDemandeCorrection(models.Model):
 
                 rec.date_validation_n1 = fields.Datetime.now()
                 rec._start_flow_after_submit_or_n1(manager_already_validated=True)
+                rec._post_workflow_trace(_("Validation N+1 effectuee par %s."))
                 continue
 
             # ========================
@@ -466,15 +472,16 @@ class ARDemandeCorrection(models.Model):
             rec._check_role_for_state()
             
             now = fields.Datetime.now()
-            if rec.current_level == 1:
+            validated_level = rec.current_level
+            if validated_level == 1:
                 rec.date_validation_v1 = now
-            elif rec.current_level == 2:
+            elif validated_level == 2:
                 rec.date_validation_v2 = now
-            elif rec.current_level == 3:
+            elif validated_level == 3:
                 rec.date_validation_v3 = now
-            elif rec.current_level == 4:
+            elif validated_level == 4:
                 rec.date_validation_v4 = now
-            elif rec.current_level == 5:
+            elif validated_level == 5:
                 rec.date_validation_v5 = now
 
             extra_seen = set()
@@ -504,6 +511,7 @@ class ARDemandeCorrection(models.Model):
                 rec._send_to_demandeur(
                     "ar_demande_correction_ecarts.mail_template_ecarts_validated_to_demandeur"
                 )
+            rec.message_post(body=_("Validation niveau %s effectuee par %s.") % (validated_level, self.env.user.name))
 
     def action_refuser(self):
         self._check_access_module()
@@ -523,6 +531,7 @@ class ARDemandeCorrection(models.Model):
 
             rec.state = "refuse"
             rec.current_level = 0
+            rec._post_workflow_trace(_("Demande refusee par %s."))
 
             rec._send_to_demandeur(
                 "ar_demande_correction_ecarts.mail_template_ecarts_refused_to_demandeur"
