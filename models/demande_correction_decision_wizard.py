@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 
 class ARDemandeCorrectionDecisionWizard(models.TransientModel):
     _name = "ar.demande.correction.decision.wizard"
-    _description = "Confirmation validation/refus demande de correction"
+    _description = "Confirmation soumission/validation/refus demande de correction"
 
     demande_id = fields.Many2one(
         "ar.demande.correction",
@@ -14,6 +14,7 @@ class ARDemandeCorrectionDecisionWizard(models.TransientModel):
     )
     action_type = fields.Selection(
         [
+            ("submit", "Soumettre"),
             ("validate", "Valider"),
             ("refuse", "Refuser"),
         ],
@@ -26,7 +27,9 @@ class ARDemandeCorrectionDecisionWizard(models.TransientModel):
         if not self.demande_id:
             raise ValidationError(_("Aucune demande selectionnee."))
 
-        if self.action_type == "validate":
+        if self.action_type == "submit":
+            self.demande_id.action_soumettre()
+        elif self.action_type == "validate":
             self.demande_id.action_valider()
         elif self.action_type == "refuse":
             self.demande_id.action_refuser()

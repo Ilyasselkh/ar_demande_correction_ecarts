@@ -3,3 +3,4 @@ from . import regle_validation
 from . import res_config_settings
 from . import res_users   
 from . import demande_correction_documentation
+from . import demande_correction_decision_wizard

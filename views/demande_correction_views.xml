@@ -7,13 +7,13 @@
     <field name="arch" type="xml">
       <list decoration-success="state == 'valide'"
             decoration-danger="state == 'refuse'"
-            decoration-info="state in ['n1', 'sup_log', 'msc', 'mfin', 'md', 'v5']"
+            decoration-info="state in ['n1', 'sup_log', 'msc', 'mfin', 'md', 'v5', 'sap_regularization']"
             decoration-muted="state == 'draft'">
         <field name="name"/>
         <field name="state" widget="badge"
                decoration-success="state == 'valide'"
                decoration-danger="state == 'refuse'"
-               decoration-info="state in ['n1', 'sup_log', 'msc', 'mfin', 'md', 'v5']"
+               decoration-info="state in ['n1', 'sup_log', 'msc', 'mfin', 'md', 'v5', 'sap_regularization']"
                decoration-muted="state == 'draft'"/>
         <field name="ajustement"/>
         <field name="demandeur_id"/>
@@ -31,31 +31,38 @@
     <field name="arch" type="xml">
       <form string="Demande de correction" class="ar_demande_correction_form">
         <header>
-          <field name="state" widget="statusbar" statusbar_visible="draft,n1,sup_log,msc,mfin,md,v5,valide,refuse"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,n1,sup_log,msc,mfin,md,v5,sap_regularization,valide,refuse"/>
         </header>
 
         <header>
-          <button name="action_soumettre"
+          <button name="action_open_submit_wizard"
                   type="object"
                   string="Soumettre"
-                  class="btn-primary"
+                  class="btn-success"
                   invisible="state != 'draft'"/>
 
-          <button name="action_valider"
+          <button name="action_open_validate_wizard"
                   type="object"
                   string="Valider"
                   class="btn-success"
-                  invisible="is_demandeur or state in ['draft', 'valide', 'refuse']"/>
+                  invisible="is_demandeur or state in ['draft', 'sap_regularization', 'valide', 'refuse']"/>
 
-          <button name="action_refuser"
+          <button name="action_regulariser_sap"
+                  type="object"
+                  string="Régulariser"
+                  class="btn-success"
+                  invisible="not is_sap_regularizer"/>
+
+          <button name="action_open_refuse_wizard"
                   type="object"
                   string="Refuser"
                   class="btn-danger"
-                  invisible="is_demandeur or state in ['draft', 'valide', 'refuse']"/>
+                  invisible="is_demandeur or state in ['draft', 'sap_regularization', 'valide', 'refuse']"/>
         </header>
 
         <sheet class="ar_demande_correction_sheet ar_sortie_caisse_sheet" style="max-width: none; width: calc(100% - 32px);">
           <field name="is_demandeur" invisible="True"/>
+          <field name="is_sap_regularizer" invisible="True"/>
 
           <div class="ar_sortie_caisse_title">
             <div>
@@ -63,14 +70,6 @@
               <h1>
                 <field name="name" readonly="True" nolabel="1"/>
               </h1>
-              <div class="ar_sc_static_3d" aria-hidden="true">
-                <span class="ar_sc_3d_card ar_sc_3d_card_main"/>
-                <span class="ar_sc_3d_card ar_sc_3d_card_back"/>
-                <span class="ar_sc_3d_card ar_sc_3d_card_front"/>
-                <span class="ar_sc_3d_coin ar_sc_3d_coin_one"/>
-                <span class="ar_sc_3d_coin ar_sc_3d_coin_two"/>
-                <span class="ar_sc_3d_coin ar_sc_3d_coin_three"/>
-              </div>
             </div>
             <div class="ar_sortie_caisse_amount">
               <span>Valeur demandee</span>
@@ -147,6 +146,11 @@
                 <field name="validateur4_id" readonly="True"/>
                 <field name="validateur5_id" readonly="True"/>
                 <field name="current_level" readonly="True"/>
+                <field name="regularisateur_sap_id" readonly="True"/>
+                <field name="date_regularisation_sap" readonly="True"/>
+                <field name="refus_user_id" readonly="True"/>
+                <field name="date_refus" readonly="True"/>
+                <field name="refus_etape" readonly="True"/>
               </group>
             </page>
           </notebook>
@@ -164,7 +168,7 @@
   </record>
 
   <record id="action_ar_archives_validees" model="ir.actions.act_window">
-    <field name="name">Archives - Validees</field>
+    <field name="name">Archives - Archive</field>
     <field name="res_model">ar.demande.correction</field>
     <field name="view_mode">list,form</field>
     <field name="domain">[('state','=','valide')]</field>

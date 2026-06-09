@@ -19,7 +19,8 @@ class ARDemandeCorrection(models.Model):
         ("mfin", "Validateur 3"),
         ("md", "Validateur 4"),
         ("v5", "Validateur 5"),
-        ("valide", "Validée"),
+        ("sap_regularization", "Régularisation sur SAP"),
+        ("valide", "Archive"),
         ("refuse", "Refusée"),
     ], default="draft", tracking=True, required=True)
 
@@ -65,10 +66,28 @@ class ARDemandeCorrection(models.Model):
     date_validation_v3 = fields.Datetime(string="Date validation Validateur 3", readonly=True, tracking=True)
     date_validation_v4 = fields.Datetime(string="Date validation Validateur 4", readonly=True, tracking=True)
     date_validation_v5 = fields.Datetime(string="Date validation Validateur 5", readonly=True, tracking=True)
+    regularisateur_sap_id = fields.Many2one("res.users", string="Régularisé sur SAP par", readonly=True, tracking=True)
+    date_regularisation_sap = fields.Datetime(string="Date régularisation SAP", readonly=True, tracking=True)
+    refus_user_id = fields.Many2one("res.users", string="Refusé par", readonly=True, tracking=True)
+    date_refus = fields.Datetime(string="Date refus", readonly=True, tracking=True)
+    refus_etape = fields.Selection([
+        ("n1", "Validation N+1"),
+        ("sup_log", "Validateur 1"),
+        ("msc", "Validateur 2"),
+        ("mfin", "Validateur 3"),
+        ("md", "Validateur 4"),
+        ("v5", "Validateur 5"),
+        ("sap_regularization", "Régularisation sur SAP"),
+    ], string="Étape du refus", readonly=True, tracking=True)
 
     current_level = fields.Integer(string="Niveau actuel", default=0, readonly=True)
 
     is_demandeur = fields.Boolean(string="Est demandeur", compute="_compute_is_demandeur", store=False)
+    is_sap_regularizer = fields.Boolean(
+        string="Peut régulariser sur SAP",
+        compute="_compute_is_sap_regularizer",
+        store=False,
+    )
 
     ajustement = fields.Selection([
         ("ecarts", "Ecarts d'inventaire"),
@@ -115,6 +134,129 @@ class ARDemandeCorrection(models.Model):
     def _compute_is_demandeur(self):
         for rec in self:
             rec.is_demandeur = (rec.demandeur_id == self.env.user)
+
+    def _compute_is_sap_regularizer(self):
+        for rec in self:
+            rec.is_sap_regularizer = rec.state == "sap_regularization" and rec.validateur1_id == self.env.user
+
+    def _report_format_datetime(self, value):
+        if not value:
+            return "-"
+        return fields.Datetime.context_timestamp(self, value).strftime("%d/%m/%Y %H:%M:%S")
+
+    def get_report_validation_history(self):
+        self.ensure_one()
+        steps = [
+            {
+                "state": "n1",
+                "label": _("Validation N+1"),
+                "user": self.manager_n1_id,
+                "date": self.date_validation_n1,
+            },
+            {
+                "state": "sup_log",
+                "label": _("Validateur 1"),
+                "user": self.validateur1_id,
+                "date": self.date_validation_v1,
+            },
+            {
+                "state": "msc",
+                "label": _("Validateur 2"),
+                "user": self.validateur2_id,
+                "date": self.date_validation_v2,
+            },
+            {
+                "state": "mfin",
+                "label": _("Validateur 3"),
+                "user": self.validateur3_id,
+                "date": self.date_validation_v3,
+            },
+            {
+                "state": "md",
+                "label": _("Validateur 4"),
+                "user": self.validateur4_id,
+                "date": self.date_validation_v4,
+            },
+            {
+                "state": "v5",
+                "label": _("Validateur 5"),
+                "user": self.validateur5_id,
+                "date": self.date_validation_v5,
+            },
+            {
+                "state": "sap_regularization",
+                "label": _("Régularisation sur SAP"),
+                "user": self.regularisateur_sap_id or self.validateur1_id,
+                "date": self.date_regularisation_sap,
+            },
+        ]
+
+        passed_states = {
+            "n1": ["sup_log", "msc", "mfin", "md", "v5", "sap_regularization", "valide"],
+            "sup_log": ["msc", "mfin", "md", "v5", "sap_regularization", "valide"],
+            "msc": ["mfin", "md", "v5", "sap_regularization", "valide"],
+            "mfin": ["md", "v5", "sap_regularization", "valide"],
+            "md": ["v5", "sap_regularization", "valide"],
+            "v5": ["sap_regularization", "valide"],
+            "sap_regularization": ["valide"],
+        }
+        seen_user_ids = set()
+        history = []
+
+        for step in steps:
+            user = step["user"]
+            step_state = step["state"]
+            date = step["date"]
+
+            if step_state in ("mfin", "md", "v5") and not user:
+                continue
+
+            if not user:
+                status = _("Non requis")
+                status_key = "not_required"
+                date_value = False
+            elif step_state != "sap_regularization" and (
+                user.id in seen_user_ids or (self.demandeur_id and user.id == self.demandeur_id.id)
+            ):
+                status = _("Non requis")
+                status_key = "not_required"
+                date_value = False
+            elif date:
+                status = _("Validé")
+                status_key = "done"
+                date_value = date
+                seen_user_ids.add(user.id)
+            elif self.state == "refuse" and self.refus_etape == step_state:
+                status = _("Refusé")
+                status_key = "refused"
+                date_value = self.date_refus
+                if self.refus_user_id:
+                    user = self.refus_user_id
+            elif self.state == step_state:
+                status = _("En cours")
+                status_key = "current"
+                date_value = False
+            elif self.state in passed_states.get(step_state, []):
+                status = _("Non requis")
+                status_key = "not_required"
+                date_value = False
+            else:
+                status = _("En attente")
+                status_key = "pending"
+                date_value = False
+
+            history.append({
+                "label": step["label"],
+                "user": user,
+                "status": status,
+                "status_key": status_key,
+                "date": self._report_format_datetime(date_value),
+            })
+
+            if user and status_key in ("done", "refused"):
+                seen_user_ids.add(user.id)
+
+        return history
 
     # =========================================================
     # Defaults HR
@@ -326,9 +468,10 @@ class ARDemandeCorrection(models.Model):
 
         if not level:
             self.current_level = 0
-            self.state = "valide"
-            self._send_to_demandeur(
-                "ar_demande_correction_ecarts.mail_template_ecarts_validated_to_demandeur"
+            self.state = "sap_regularization"
+            self._send_to_validator(
+                "ar_demande_correction_ecarts.mail_template_ecarts_to_sap_regularizer",
+                self.validateur1_id
             )
             return
 
@@ -400,6 +543,30 @@ class ARDemandeCorrection(models.Model):
         self.ensure_one()
         self.message_post(body=message % self.env.user.name)
 
+    def _action_open_decision_wizard(self, action_type):
+        self.ensure_one()
+        return {
+            "name": _("Confirmation"),
+            "type": "ir.actions.act_window",
+            "res_model": "ar.demande.correction.decision.wizard",
+            "view_mode": "form",
+            "views": [(self.env.ref("ar_demande_correction_ecarts.view_ar_demande_correction_decision_wizard_form").id, "form")],
+            "target": "new",
+            "context": {
+                "default_demande_id": self.id,
+                "default_action_type": action_type,
+            },
+        }
+
+    def action_open_submit_wizard(self):
+        return self._action_open_decision_wizard("submit")
+
+    def action_open_validate_wizard(self):
+        return self._action_open_decision_wizard("validate")
+
+    def action_open_refuse_wizard(self):
+        return self._action_open_decision_wizard("refuse")
+
     def action_soumettre(self):
         self._check_access_module()
 
@@ -441,7 +608,7 @@ class ARDemandeCorrection(models.Model):
         self._check_access_module()
 
         for rec in self:
-            if rec.state in ("draft", "valide", "refuse"):
+            if rec.state in ("draft", "sap_regularization", "valide", "refuse"):
                 raise ValidationError(_("Vous ne pouvez pas valider dans cet état."))
 
             # ===========
@@ -507,11 +674,34 @@ class ARDemandeCorrection(models.Model):
                 )
             else:
                 rec.current_level = 0
-                rec.state = "valide"
-                rec._send_to_demandeur(
-                    "ar_demande_correction_ecarts.mail_template_ecarts_validated_to_demandeur"
+                rec.state = "sap_regularization"
+                rec._send_to_validator(
+                    "ar_demande_correction_ecarts.mail_template_ecarts_to_sap_regularizer",
+                    rec.validateur1_id
                 )
             rec.message_post(body=_("Validation niveau %s effectuee par %s.") % (validated_level, self.env.user.name))
+
+    def action_regulariser_sap(self):
+        self._check_access_module()
+
+        for rec in self:
+            if rec.state != "sap_regularization":
+                raise ValidationError(_("La régularisation SAP n'est possible qu'à l'étape 'Régularisation sur SAP'."))
+            if not rec.validateur1_id:
+                raise AccessError(_("Aucun Validateur 1 n'est défini pour cette demande."))
+            if rec.env.user != rec.validateur1_id:
+                raise AccessError(_("Seul le Validateur 1 peut régulariser cette demande sur SAP."))
+            if not rec.env.user.x_role_sup_log:
+                raise AccessError(_("Seul le Validateur 1 peut régulariser cette demande sur SAP."))
+
+            rec.regularisateur_sap_id = rec.env.user.id
+            rec.date_regularisation_sap = fields.Datetime.now()
+            rec.current_level = 0
+            rec.state = "valide"
+            rec._post_workflow_trace(_("Régularisation SAP effectuée par %s. Demande archivée."))
+            rec._send_to_demandeur(
+                "ar_demande_correction_ecarts.mail_template_ecarts_validated_to_demandeur"
+            )
 
     def action_refuser(self):
         self._check_access_module()
@@ -520,15 +710,25 @@ class ARDemandeCorrection(models.Model):
             if rec.demandeur_id == rec.env.user:
                 raise AccessError(_("Le demandeur ne peut pas refuser sa propre demande."))
             if rec.state == "valide":
-                raise ValidationError(_("Une demande validée ne peut pas être refusée."))
+                raise ValidationError(_("Une demande archivée ne peut pas être refusée."))
 
             if rec.state == "n1":
                 rec._check_user_can_validate_n1()
                 rec._check_role_for_state()
+            elif rec.state == "sap_regularization":
+                if not rec.validateur1_id:
+                    raise AccessError(_("Aucun Validateur 1 n'est défini pour cette demande."))
+                if rec.env.user != rec.validateur1_id:
+                    raise AccessError(_("Seul le Validateur 1 peut refuser cette étape."))
+                if not rec.env.user.x_role_sup_log:
+                    raise AccessError(_("Seul le Validateur 1 peut refuser cette étape."))
             elif rec.state not in ("draft", "refuse"):
                 rec._check_user_can_validate_level()
                 rec._check_role_for_state()
 
+            rec.refus_user_id = rec.env.user.id
+            rec.date_refus = fields.Datetime.now()
+            rec.refus_etape = rec.state if rec.state in ("n1", "sup_log", "msc", "mfin", "md", "v5", "sap_regularization") else False
             rec.state = "refuse"
             rec.current_level = 0
             rec._post_workflow_trace(_("Demande refusee par %s."))

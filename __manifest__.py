@@ -6,12 +6,14 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "data/report_araymond_layout.xml",
         "data/report_demande_correction.xml",
         "data/sequence.xml",
         "data/mail_templates.xml",
 
         "views/regle_validation_views.xml",
         "views/demande_correction_views.xml",
+        "views/demande_correction_decision_wizard_views.xml",
         "views/demande_correction_documentation_views.xml",
         "views/res_config_settings_views.xml",
         "views/res_users_views.xml",

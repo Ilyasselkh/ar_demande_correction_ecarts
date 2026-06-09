@@ -8,6 +8,12 @@
         <field name="demande_id" invisible="1"/>
         <field name="action_type" invisible="1"/>
 
+        <div class="ar_dc_wizard_message" invisible="action_type != 'submit'">
+          <div class="ar_dc_wizard_icon ar_dc_wizard_icon_validate">OK</div>
+          <h2>Confirmer la soumission</h2>
+          <p>Voulez-vous vraiment soumettre cette demande ?</p>
+        </div>
+
         <div class="ar_dc_wizard_message" invisible="action_type != 'validate'">
           <div class="ar_dc_wizard_icon ar_dc_wizard_icon_validate">OK</div>
           <h2>Confirmer la validation</h2>

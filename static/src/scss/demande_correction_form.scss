@@ -143,7 +143,6 @@
         perspective: 900px;
     }
 
-    .ar_sortie_caisse_title.ar_sc_reveal,
     .ar_sortie_caisse_panel.ar_sc_reveal {
         animation: arScFadeUp 460ms ease-out both;
     }
@@ -157,14 +156,12 @@
     }
 
     .ar_sortie_caisse_title > div:first-child {
-        --ar-sc-tilt-x: 0deg;
-        --ar-sc-tilt-y: 0deg;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         min-height: 128px;
-        padding: 22px 260px 22px 20px;
+        padding: 22px 20px;
         border: 1px solid rgba(147, 197, 253, 0.72);
         border-radius: 8px;
         background:
@@ -177,48 +174,7 @@
             0 0 0 4px rgba(20, 184, 166, 0.06),
             inset 0 1px 0 rgba(255, 255, 255, 0.88);
         overflow: hidden;
-        transform: perspective(860px) rotateX(var(--ar-sc-tilt-x)) rotateY(var(--ar-sc-tilt-y)) translateZ(0);
-        transform-style: preserve-3d;
-        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-    }
-
-    .ar_sortie_caisse_title > div:first-child::before,
-    .ar_sortie_caisse_amount::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.5) 34%, transparent 68%);
-        opacity: 0.7;
-        transform: translateX(-120%);
-        animation: arScHeaderSweep 4.8s ease-in-out infinite;
-        pointer-events: none;
-    }
-
-    .ar_sortie_caisse_title > div:first-child::after {
-        content: "";
-        position: absolute;
-        right: 48px;
-        top: 24px;
-        width: 150px;
-        height: 86px;
-        border: 1px solid rgba(255, 255, 255, 0.72);
-        border-radius: 14px;
-        background:
-            linear-gradient(90deg, rgba(255, 255, 255, 0.72) 18%, transparent 18% 28%, rgba(255, 255, 255, 0.45) 28% 58%, transparent 58%),
-            linear-gradient(135deg, rgba(15, 118, 110, 0.96), rgba(37, 99, 235, 0.92));
-        box-shadow:
-            -34px 26px 0 -9px rgba(255, 255, 255, 0.78),
-            -34px 26px 0 -8px rgba(37, 99, 235, 0.32),
-            22px -18px 0 -14px rgba(245, 158, 11, 0.95),
-            24px -16px 0 -13px rgba(255, 255, 255, 0.72),
-            0 24px 36px rgba(15, 23, 42, 0.2);
-        opacity: 0.96;
-        transform: rotateX(58deg) rotateZ(-15deg) translateZ(38px);
-        transform-origin: center;
-        animation: arScHeroStackFloat 4.8s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 1;
+        transition: border-color 180ms ease, box-shadow 180ms ease;
     }
 
     .ar_sortie_caisse_title > div:first-child:hover {
@@ -227,149 +183,6 @@
             0 24px 48px rgba(23, 32, 51, 0.11),
             0 0 0 4px rgba(20, 184, 166, 0.08),
             inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        transform: perspective(860px) rotateX(calc(var(--ar-sc-tilt-x) + 1deg)) rotateY(var(--ar-sc-tilt-y)) translateY(-3px);
-    }
-
-    .ar_sc_3d_stage {
-        bottom: 0;
-        left: 34%;
-        opacity: 0.96;
-        overflow: hidden;
-        pointer-events: none;
-        position: absolute;
-        right: 0;
-        top: 0;
-        transform: translateZ(38px);
-        z-index: 0;
-    }
-
-    .ar_sc_3d_stage::before {
-        background:
-            linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)),
-            radial-gradient(circle at 72% 42%, rgba(45, 212, 191, 0.2), transparent 42%);
-        content: "";
-        inset: 0;
-        position: absolute;
-    }
-
-    .ar_sc_3d_stage canvas {
-        display: block;
-        height: 100%;
-        mix-blend-mode: multiply;
-        position: relative;
-        width: 100%;
-    }
-
-    .ar_sc_static_3d {
-        bottom: 10px;
-        height: 112px;
-        pointer-events: none;
-        position: absolute;
-        right: 16px;
-        transform: perspective(680px) rotateX(56deg) rotateZ(-16deg);
-        transform-style: preserve-3d;
-        width: 230px;
-        z-index: 1;
-    }
-
-    .ar_sc_3d_card,
-    .ar_sc_3d_coin {
-        display: block;
-        position: absolute;
-        transform-style: preserve-3d;
-    }
-
-    .ar_sc_3d_card {
-        border: 1px solid rgba(255, 255, 255, 0.72);
-        border-radius: 13px;
-        box-shadow: 0 24px 42px rgba(15, 23, 42, 0.2);
-        height: 74px;
-        overflow: hidden;
-        width: 132px;
-    }
-
-    .ar_sc_3d_card::before,
-    .ar_sc_3d_card::after {
-        border-radius: 999px;
-        content: "";
-        position: absolute;
-    }
-
-    .ar_sc_3d_card::before {
-        background: rgba(255, 255, 255, 0.68);
-        height: 7px;
-        left: 16px;
-        top: 19px;
-        width: 54px;
-    }
-
-    .ar_sc_3d_card::after {
-        background: rgba(255, 255, 255, 0.48);
-        box-shadow: 42px 0 0 rgba(255, 255, 255, 0.28);
-        height: 7px;
-        left: 16px;
-        top: 39px;
-        width: 76px;
-    }
-
-    .ar_sc_3d_card_main {
-        animation: arScCardMainLift 4.2s ease-in-out infinite;
-        background: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
-        left: 48px;
-        top: 20px;
-        transform: translateZ(42px);
-    }
-
-    .ar_sc_3d_card_back {
-        animation: arScCardBackLift 5.2s ease-in-out infinite;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(191, 219, 254, 0.94));
-        left: 20px;
-        top: 36px;
-        transform: translateZ(8px);
-    }
-
-    .ar_sc_3d_card_front {
-        animation: arScCardFrontLift 4.7s ease-in-out infinite;
-        background: linear-gradient(135deg, rgba(20, 184, 166, 0.92), rgba(245, 158, 11, 0.84));
-        height: 54px;
-        left: 102px;
-        top: 6px;
-        transform: translateZ(72px) rotateZ(12deg);
-        width: 88px;
-    }
-
-    .ar_sc_3d_coin {
-        background: radial-gradient(circle at 34% 28%, #fff7cc 0%, #fde68a 34%, #f59e0b 66%, #b45309 100%);
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: 999px;
-        box-shadow: 0 12px 18px rgba(180, 83, 9, 0.2);
-        height: 22px;
-        width: 22px;
-    }
-
-    .ar_sc_3d_coin_one {
-        animation: arScCoinSpin 3.4s linear infinite;
-        left: 176px;
-        top: 68px;
-        transform: translateZ(82px);
-    }
-
-    .ar_sc_3d_coin_two {
-        animation: arScCoinSpin 3.8s linear infinite reverse;
-        height: 18px;
-        left: 14px;
-        top: 6px;
-        transform: translateZ(46px);
-        width: 18px;
-    }
-
-    .ar_sc_3d_coin_three {
-        animation: arScCoinSpin 4.2s linear infinite;
-        height: 15px;
-        left: 204px;
-        top: 18px;
-        transform: translateZ(60px);
-        width: 15px;
     }
 
     .ar_sortie_caisse_label {
@@ -424,10 +237,6 @@
             0 0 0 1px rgba(255, 255, 255, 0.14) inset,
             inset 0 1px 0 rgba(255, 255, 255, 0.18);
         overflow: hidden;
-        animation: arScAmountGradient 6s ease-in-out infinite, arScAmountFloat 4.5s ease-in-out infinite;
-        transform: perspective(760px) translateZ(0);
-        transform-style: preserve-3d;
-        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
     .ar_sortie_caisse_amount::after {
@@ -442,7 +251,6 @@
         box-shadow:
             -58px 84px 0 -52px rgba(255, 255, 255, 0.42),
             -94px 36px 0 -54px rgba(45, 212, 191, 0.38);
-        animation: arScRingSpin 9s linear infinite;
         pointer-events: none;
     }
 
@@ -452,11 +260,6 @@
             0 25px 48px rgba(15, 118, 110, 0.26),
             0 0 0 4px rgba(37, 99, 235, 0.12),
             inset 0 1px 0 rgba(255, 255, 255, 0.22);
-        transform: perspective(760px) rotateX(2deg) rotateY(-3deg) translateY(-4px) scale(1.01);
-    }
-
-    .ar_sortie_caisse_amount.ar_sc_amount_flash {
-        animation: arScAmountFlash 760ms ease-out both;
     }
 
     .ar_sortie_caisse_amount > span,
@@ -562,6 +365,76 @@
         color: var(--ar-sc-ink);
     }
 
+    .ar_dc_context_panel .o_inner_group {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .ar_dc_context_panel .o_inner_group > tbody > tr > td.o_td_label {
+        width: 180px;
+        min-width: 170px;
+        padding: 7px 18px 7px 0;
+        font-size: 13px;
+        vertical-align: top;
+        white-space: normal;
+    }
+
+    .ar_dc_context_panel .o_inner_group > tbody > tr > td:not(.o_td_label) {
+        width: 100%;
+        padding: 5px 0;
+        vertical-align: top;
+    }
+
+    .ar_dc_context_panel .o_field_widget {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        width: 100%;
+        min-width: 320px;
+        max-width: 520px;
+        padding: 6px 10px;
+        border: 1px solid rgba(203, 213, 225, 0.72);
+        border-radius: 7px;
+        background: rgba(248, 250, 252, 0.86);
+        color: #07142f;
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+
+    .ar_dc_context_panel .o_field_widget:empty {
+        min-height: 34px;
+    }
+
+    .ar_dc_context_panel .o_field_widget .o_input,
+    .ar_dc_context_panel .o_field_widget input,
+    .ar_dc_context_panel .o_field_widget textarea,
+    .ar_dc_context_panel .o_field_widget select {
+        width: 100%;
+        min-height: 32px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #07142f;
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.45;
+        box-shadow: none;
+    }
+
+    .ar_dc_context_panel .o_field_widget textarea {
+        min-height: 64px;
+        resize: vertical;
+    }
+
+    .ar_dc_context_panel .o_field_widget:focus-within {
+        border-color: rgba(37, 99, 235, 0.48);
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
     .ar_dc_state_hint {
         background: #ecfeff;
         border: 1px solid #67e8f9;
@@ -653,6 +526,72 @@
     padding: 4px 10px;
 }
 
+.modal .ar_dc_decision_wizard {
+    padding: 0;
+}
+
+.modal .ar_dc_decision_wizard .ar_dc_wizard_message {
+    align-items: center;
+    background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.11), rgba(37, 99, 235, 0.08)),
+        #ffffff;
+    border: 1px solid #dbe4ee;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 8px 0 18px;
+    padding: 26px 22px;
+    text-align: center;
+}
+
+.modal .ar_dc_decision_wizard .ar_dc_wizard_icon {
+    align-items: center;
+    border-radius: 999px;
+    color: #ffffff;
+    display: flex;
+    font-size: 13px;
+    font-weight: 900;
+    height: 44px;
+    justify-content: center;
+    margin-bottom: 4px;
+    width: 44px;
+}
+
+.modal .ar_dc_decision_wizard .ar_dc_wizard_icon_validate {
+    background: #16a34a;
+}
+
+.modal .ar_dc_decision_wizard .ar_dc_wizard_icon_refuse {
+    background: #dc2626;
+}
+
+.modal .ar_dc_decision_wizard h2 {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.modal .ar_dc_decision_wizard p {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal .ar_dc_decision_wizard footer {
+    border-top: 0;
+    justify-content: center;
+}
+
+.modal .ar_dc_decision_wizard footer .btn {
+    border-radius: 7px;
+    font-weight: 800;
+    min-width: 112px;
+}
+
 @keyframes arScSheetIn {
     from {
         opacity: 0;
@@ -675,85 +614,6 @@
     }
 }
 
-@keyframes arScAmountFlash {
-    0% {
-        box-shadow: 0 14px 28px rgba(15, 118, 110, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    }
-    35% {
-        box-shadow: 0 18px 36px rgba(37, 99, 235, 0.26), 0 0 0 4px rgba(37, 99, 235, 0.13), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    }
-    100% {
-        box-shadow: 0 14px 28px rgba(15, 118, 110, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    }
-}
-
-@keyframes arScHeaderSweep {
-    0%,
-    58% {
-        opacity: 0;
-        transform: translateX(-120%);
-    }
-    68% {
-        opacity: 0.7;
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(120%);
-    }
-}
-
-@keyframes arScHeroStackFloat {
-    0%,
-    100% {
-        transform: rotateX(58deg) rotateZ(-15deg) translate3d(0, 0, 38px);
-    }
-    50% {
-        transform: rotateX(58deg) rotateZ(-11deg) translate3d(-8px, -10px, 54px);
-    }
-}
-
-@keyframes arScCardMainLift {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 42px);
-    }
-    50% {
-        transform: translate3d(-8px, -10px, 62px);
-    }
-}
-
-@keyframes arScCardBackLift {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 8px);
-    }
-    50% {
-        transform: translate3d(8px, 7px, 20px);
-    }
-}
-
-@keyframes arScCardFrontLift {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 72px) rotateZ(12deg);
-    }
-    50% {
-        transform: translate3d(6px, -12px, 92px) rotateZ(18deg);
-    }
-}
-
-@keyframes arScCoinSpin {
-    0% {
-        transform: translateZ(74px) rotateY(0deg) scaleX(1);
-    }
-    50% {
-        transform: translateZ(96px) rotateY(180deg) scaleX(0.28);
-    }
-    100% {
-        transform: translateZ(74px) rotateY(360deg) scaleX(1);
-    }
-}
-
 @keyframes arScBadgeGlow {
     0%,
     100% {
@@ -766,43 +626,10 @@
     }
 }
 
-@keyframes arScAmountGradient {
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes arScAmountFloat {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-3px);
-    }
-}
-
-@keyframes arScRingSpin {
-    from {
-        transform: rotate(0deg) scale(1);
-    }
-    to {
-        transform: rotate(360deg) scale(1.05);
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .o_form_view.ar_demande_correction_form * {
         animation-duration: 1ms !important;
         transition-duration: 1ms !important;
-    }
-
-    .o_form_view.ar_demande_correction_form .ar_sc_3d_stage canvas {
-        opacity: 0.55;
     }
 }
 
@@ -825,27 +652,15 @@
 
         .ar_sortie_caisse_title > div:first-child {
             min-height: 132px;
-            padding-right: 150px;
-        }
-
-        .ar_sortie_caisse_title > div:first-child::after {
-            right: 18px;
-            top: 34px;
-            transform: rotateX(58deg) rotateZ(-15deg) translateZ(28px) scale(0.72);
-        }
-
-        .ar_sc_static_3d {
-            right: -26px;
-            transform: perspective(680px) rotateX(56deg) rotateZ(-16deg) scale(0.72);
-        }
-
-        .ar_sc_3d_stage {
-            left: 28%;
-            opacity: 0.72;
         }
 
         .ar_sortie_caisse_amount {
             min-width: 0;
+        }
+
+        .ar_dc_context_panel .o_field_widget {
+            min-width: 0;
+            max-width: none;
         }
     }
 }

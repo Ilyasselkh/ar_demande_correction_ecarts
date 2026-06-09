@@ -40,7 +40,7 @@
             sequence="30"/>
 
   <menuitem id="menu_ar_ecarts_archives_val"
-            name="Validée"
+            name="Archive"
             parent="menu_ar_ecarts_archives"
             action="ar_demande_correction_ecarts.action_ar_archives_validees"
             sequence="10"/>

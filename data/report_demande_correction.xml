@@ -1,376 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ========================= -->
-    <!-- QWeb Template PDF -->
-    <!-- ========================= -->
     <template id="rep_demande_correction_ecarts">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout">
-
+                <t t-set="o" t-value="doc"/>
+                <t t-call="ar_demande_correction_ecarts.report_demande_correction_araymond_external_layout">
                     <div class="page">
-                        <div class="oe_structure"/>
+                        <style>
+                            .ar_report_title {
+                                color: #0f172a;
+                                font-size: 24px;
+                                font-weight: 800;
+                                margin-bottom: 18px;
+                                text-align: center;
+                                text-transform: uppercase;
+                            }
+                            .ar_report_ref {
+                                background: #eef8f6;
+                                border: 1px solid #9ed3cd;
+                                border-radius: 6px;
+                                color: #115e59;
+                                display: inline-block;
+                                font-weight: 800;
+                                margin-bottom: 18px;
+                                padding: 7px 12px;
+                                white-space: nowrap;
+                            }
+                            .ar_report_section {
+                                border: 1px solid #d8e0ea;
+                                border-radius: 6px;
+                                margin-bottom: 16px;
+                                padding: 14px 16px;
+                            }
+                            .ar_report_section h3 {
+                                border-bottom: 1px solid #e7edf4;
+                                color: #172033;
+                                font-size: 14px;
+                                font-weight: 800;
+                                margin: 0 0 12px;
+                                padding-bottom: 8px;
+                                text-transform: uppercase;
+                            }
+                            .ar_report_grid {
+                                display: table;
+                                width: 100%;
+                            }
+                            .ar_report_row {
+                                display: table-row;
+                            }
+                            .ar_report_label,
+                            .ar_report_value {
+                                display: table-cell;
+                                padding: 5px 0;
+                                vertical-align: top;
+                            }
+                            .ar_report_label {
+                                color: #697386;
+                                font-weight: 700;
+                                width: 170px;
+                            }
+                            .ar_report_table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .ar_report_table th {
+                                background: #eef3f8;
+                                border: 1px solid #cfdce8;
+                                color: #172033;
+                                font-weight: 800;
+                                padding: 8px;
+                                text-align: left;
+                            }
+                            .ar_report_table td {
+                                border: 1px solid #d8e0ea;
+                                padding: 8px;
+                                vertical-align: top;
+                            }
+                            .ar_report_num {
+                                text-align: right;
+                                white-space: nowrap;
+                            }
+                            .ar_report_center {
+                                text-align: center;
+                            }
+                            .ar_report_total {
+                                background: #eef8f6;
+                                border: 1px solid #9ed3cd;
+                                border-radius: 6px;
+                                color: #115e59;
+                                font-size: 15px;
+                                font-weight: 900;
+                                margin-top: 12px;
+                                padding: 10px 12px;
+                                text-align: right;
+                            }
+                            .ar_report_status {
+                                border-radius: 999px;
+                                display: inline-block;
+                                font-size: 11px;
+                                font-weight: 800;
+                                padding: 4px 9px;
+                                white-space: nowrap;
+                            }
+                            .ar_report_status_done {
+                                background: #eaf7ef;
+                                color: #166534;
+                            }
+                            .ar_report_status_current {
+                                background: #eef3ff;
+                                color: #1d4ed8;
+                            }
+                            .ar_report_status_pending {
+                                background: #f8fafc;
+                                color: #64748b;
+                            }
+                            .ar_report_status_refused {
+                                background: #fef2f2;
+                                color: #b91c1c;
+                            }
+                            .ar_report_status_not_required {
+                                background: #f3f4f6;
+                                color: #6b7280;
+                            }
+                        </style>
 
-                        <h2 class="mt-12">
-                            <div class="text-center">
-                                <strong>DEMANDE D'AJUSTEMENT DE STOCK</strong>
-                            </div>
-                        </h2>
-
-                        <h2 class="mt-4">
+                        <h1 class="ar_report_title">DEMANDE D'AJUSTEMENT DE STOCK</h1>
+                        <div class="ar_report_ref">
                             Référence :
                             <span t-field="doc.name"/>
-                        </h2>
-
-                        <!-- Infos générales -->
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Demandeur :</strong>
-                            <span t-field="doc.demandeur_id.name" style="color:#0468af; font-weight:600;"/>
                         </div>
 
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Département :</strong>
-                            <span t-field="doc.department_id.name" style="color:#0468af; font-weight:600;"/>
-                        </div>
-
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Manager N+1 :</strong>
-                            <span t-field="doc.manager_n1_id.name" style="color:#0468af; font-weight:600;"/>
-                        </div>
-
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Date :</strong>
-                            <span t-field="doc.date_demande" style="color:#0468af; font-weight:600;"/>
-                        </div>
-
-                        <div style="border-top:1px solid #dcdcdc; margin:10px 0 12px 0;"></div>
-
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Statut :</strong>
-                            <span t-field="doc.state" style="color:#0468af; font-weight:600;"/>
-                        </div>
-
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Ajustement :</strong>
-                            <span t-field="doc.ajustement" style="color:#0468af; font-weight:600;"/>
-                        </div>
-
-                        <t t-if="doc.ajustement == 'ecarts'">
-                            <div>
-                                <strong style="font-size:1.2em; font-weight:900;">Inventaire tournant :</strong>
-                                <span t-field="doc.inventaire_tournant" style="color:#0468af; font-weight:600;"/>
+                        <div class="ar_report_section">
+                            <h3>Informations demandeur</h3>
+                            <div class="ar_report_grid">
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Demandeur</div>
+                                    <div class="ar_report_value"><span t-field="doc.demandeur_id"/></div>
+                                </div>
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Manager N+1</div>
+                                    <div class="ar_report_value"><span t-field="doc.manager_n1_id"/></div>
+                                </div>
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Département</div>
+                                    <div class="ar_report_value"><span t-field="doc.department_id"/></div>
+                                </div>
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Date</div>
+                                    <div class="ar_report_value"><span t-field="doc.date_demande"/></div>
+                                </div>
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">État</div>
+                                    <div class="ar_report_value"><span t-field="doc.state"/></div>
+                                </div>
                             </div>
-                        </t>
-
-                        <div>
-                            <strong style="font-size:1.2em; font-weight:900;">Total Valeur (MAD) :</strong>
-                            <span t-field="doc.total_mad" style="color:#0468af; font-weight:600;"/>
                         </div>
 
-                        <div style="border-top:1px solid #dcdcdc; margin:10px 0 12px 0;"></div>
-
-                        <!-- Commentaire général -->
-                        <t t-if="doc.commentaire">
-                            <div>
-                                <strong style="font-size:1.2em; font-weight:900;">Commentaire général :</strong>
-                                <span t-field="doc.commentaire" style="color:#0468af; font-weight:600;"/>
+                        <div class="ar_report_section">
+                            <h3>Contexte de l'ajustement</h3>
+                            <div class="ar_report_grid">
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Ajustement de Stock</div>
+                                    <div class="ar_report_value"><span t-field="doc.ajustement"/></div>
+                                </div>
+                                <div class="ar_report_row" t-if="doc.ajustement == 'ecarts'">
+                                    <div class="ar_report_label">Inventaire tournant</div>
+                                    <div class="ar_report_value"><span t-field="doc.inventaire_tournant"/></div>
+                                </div>
+                                <div class="ar_report_row" t-if="doc.inventaire_tournant == 'oui'">
+                                    <div class="ar_report_label">Numéro de session</div>
+                                    <div class="ar_report_value">
+                                        <span t-if="doc.numero_session" t-field="doc.numero_session"/>
+                                        <span t-else="">-</span>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
 
-                            <div style="border-top:1px solid #dcdcdc; margin:10px 0 12px 0;"></div>
-                        </t>
+                        <div class="ar_report_section">
+                            <h3>Commentaire général</h3>
+                            <div t-if="doc.commentaire">
+                                <span t-field="doc.commentaire"/>
+                            </div>
+                            <div t-else="">-</div>
+                        </div>
 
-                        <!-- Lignes -->
-                        <h2 class="mt-4">Lignes :</h2>
-
-                        <table class="table table-sm o_main_table mt-4">
-                            <thead style="display: table-row-group">
-                                <tr>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Magasin</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Référence</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Désignation</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Lot</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Quantité</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Unité</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Valeur (MAD)</th>
-                                    <th class="text-center" style="font-size:1.05em;font-weight:900;">Motif écart</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <t t-foreach="doc.line_ids" t-as="l">
+                        <div class="ar_report_section">
+                            <h3>Détails de l'écart</h3>
+                            <table class="ar_report_table">
+                                <thead>
                                     <tr>
-                                        <td class="text-center">
-                                            <span t-field="l.magasin"/>
+                                        <th>Magasin</th>
+                                        <th>Référence</th>
+                                        <th>Désignation</th>
+                                        <th>Lot</th>
+                                        <th class="ar_report_num">Quantité</th>
+                                        <th>Unité</th>
+                                        <th class="ar_report_num">Valeur MAD</th>
+                                        <th>Motif écart</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.line_ids" t-as="line">
+                                        <td><span t-field="line.magasin"/></td>
+                                        <td><span t-field="line.reference"/></td>
+                                        <td><span t-field="line.designation"/></td>
+                                        <td><span t-field="line.lot"/></td>
+                                        <td class="ar_report_num"><span t-field="line.quantite"/></td>
+                                        <td><span t-field="line.unite"/></td>
+                                        <td class="ar_report_num">
+                                            <span t-esc="'%s DH' % ('{:,.2f}'.format(line.valeur_mad or 0.0).replace(',', ' ').replace('.', ','))"/>
                                         </td>
-                                        <td class="text-center">
-                                            <span t-field="l.reference"/>
+                                        <td><span t-field="line.motif_ecart"/></td>
+                                    </tr>
+                                    <tr t-if="not doc.line_ids">
+                                        <td colspan="8">Aucune ligne.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="ar_report_total">
+                                Total :
+                                <span t-esc="'%s DH' % ('{:,.2f}'.format(doc.total_mad or 0.0).replace(',', ' ').replace('.', ','))"/>
+                            </div>
+                        </div>
+
+                        <div class="ar_report_section">
+                            <h3>Synthèse financière</h3>
+                            <div class="ar_report_grid">
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Total Valeur (MAD)</div>
+                                    <div class="ar_report_value">
+                                        <span t-esc="'%s DH' % ('{:,.2f}'.format(doc.total_mad or 0.0).replace(',', ' ').replace('.', ','))"/>
+                                    </div>
+                                </div>
+                                <div class="ar_report_row">
+                                    <div class="ar_report_label">Total absolu</div>
+                                    <div class="ar_report_value">
+                                        <span t-esc="'%s DH' % ('{:,.2f}'.format(doc.total_absolu or 0.0).replace(',', ' ').replace('.', ','))"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ar_report_section">
+                            <h3>Historique des validations</h3>
+                            <table class="ar_report_table">
+                                <thead>
+                                    <tr>
+                                        <th>Signataire</th>
+                                        <th>Étape</th>
+                                        <th class="ar_report_center">Statut</th>
+                                        <th>Date validation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.get_report_validation_history()" t-as="step">
+                                        <td>
+                                            <span t-if="step['user']" t-esc="step['user'].name"/>
+                                            <span t-else="">-</span>
                                         </td>
-                                        <td class="text-center">
-                                            <span t-field="l.designation"/>
+                                        <td><span t-esc="step['label']"/></td>
+                                        <td class="ar_report_center">
+                                            <span t-attf-class="ar_report_status ar_report_status_#{step['status_key']}">
+                                                <span t-esc="step['status']"/>
+                                            </span>
                                         </td>
-                                        <td class="text-center">
-                                            <span t-field="l.lot"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="l.quantite"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="l.unite"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="l.valeur_mad"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="l.motif_ecart"/>
+                                        <td>
+                                            <span t-esc="step['date']"/>
                                         </td>
                                     </tr>
-                                </t>
-                            </tbody>
-                        </table>
-
-                        <div style="border-top:1px solid #dcdcdc; margin:10px 0 12px 0;"></div>
-
-                        <!-- Validateurs -->
-                        <h2 class="mt-4">Signataires :</h2>
-
-                        <table class="table table-sm o_main_table mt-4">
-                            <thead style="display: table-row-group">
-                                <tr>
-                                    <th class="text-center" style="font-size:1.1em;font-weight:900;">Signataire</th>
-                                    <th class="text-center" style="font-size:1.1em;font-weight:900;">Étape</th>
-                                    <th class="text-center" style="font-size:1.1em;font-weight:900;">Statut</th>
-                                    <th class="text-center" style="font-size:1.1em;font-weight:900;">Date validation</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                <!-- ======================= -->
-                                <!-- Manager N+1 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.manager_n1_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.manager_n1_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validation N+1</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state in ['sup_log','msc','mfin','md','v5','valide']">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_n1">
-                                                <span t-field="doc.date_validation_n1"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                                <!-- ======================= -->
-                                <!-- Validateur 1 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.validateur1_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.validateur1_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validateur 1</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1','sup_log']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state in ['msc','mfin','md','v5','valide']">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_v1">
-                                                <span t-field="doc.date_validation_v1"/>
-                                            </t>
-                                            <t t-elif="doc.demandeur_id and doc.validateur1_id and doc.demandeur_id.id == doc.validateur1_id.id">
-                                                <span t-field="doc.date_demande"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                                <!-- ======================= -->
-                                <!-- Validateur 2 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.validateur2_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.validateur2_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validateur 2</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1','sup_log','msc']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state in ['mfin','md','v5','valide']">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_v2">
-                                                <span t-field="doc.date_validation_v2"/>
-                                            </t>
-                                            <t t-elif="doc.demandeur_id and doc.validateur2_id and doc.demandeur_id.id == doc.validateur2_id.id">
-                                                <span t-field="doc.date_demande"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                                <!-- ======================= -->
-                                <!-- Validateur 3 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.validateur3_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.validateur3_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validateur 3</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1','sup_log','msc','mfin']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state in ['md','v5','valide']">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_v3">
-                                                <span t-field="doc.date_validation_v3"/>
-                                            </t>
-                                            <t t-elif="doc.demandeur_id and doc.validateur3_id and doc.demandeur_id.id == doc.validateur3_id.id">
-                                                <span t-field="doc.date_demande"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                                <!-- ======================= -->
-                                <!-- Validateur 4 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.validateur4_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.validateur4_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validateur 4</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1','sup_log','msc','mfin','md']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state in ['v5','valide']">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_v4">
-                                                <span t-field="doc.date_validation_v4"/>
-                                            </t>
-                                            <t t-elif="doc.demandeur_id and doc.validateur4_id and doc.demandeur_id.id == doc.validateur4_id.id">
-                                                <span t-field="doc.date_demande"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                                <!-- ======================= -->
-                                <!-- Validateur 5 -->
-                                <!-- ======================= -->
-                                <t t-if="doc.validateur5_id">
-                                    <tr>
-                                        <td class="text-center">
-                                            <span t-field="doc.validateur5_id.name"/>
-                                        </td>
-
-                                        <td class="text-center">Validateur 5</td>
-
-                                        <td class="text-center">
-                                            <t t-if="doc.state in ['draft','n1','sup_log','msc','mfin','md','v5']">
-                                                <span style="color:red;font-weight:900;">NOK</span>
-                                            </t>
-                                            <t t-elif="doc.state == 'valide'">
-                                                <span style="color:green;font-weight:900;">OK</span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="color:#d98c00;font-weight:900;">En attente</span>
-                                            </t>
-                                        </td>
-                                        <td class="text-center">
-                                            <t t-if="doc.date_validation_v5">
-                                                <span t-field="doc.date_validation_v5"/>
-                                            </t>
-                                            <t t-elif="doc.demandeur_id and doc.validateur5_id and doc.demandeur_id.id == doc.validateur5_id.id">
-                                                <span t-field="doc.date_demande"/>
-                                            </t>
-                                            <t t-else="">-</t>
-                                        </td>
-                                    </tr>
-                                </t>
-
-                            </tbody>
-                        </table>
-
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
                 </t>
             </t>
         </t>
     </template>
 
-    <!-- ========================= -->
-    <!-- Report Action -->
-    <!-- ========================= -->
     <record id="action_report_demande_correction_ecarts" model="ir.actions.report">
         <field name="name">Demande Ajustement De Stock</field>
         <field name="model">ar.demande.correction</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">ar_demande_correction_ecarts.rep_demande_correction_ecarts</field>
         <field name="report_file">ar_demande_correction_ecarts.rep_demande_correction_ecarts</field>
+        <field name="paperformat_id" ref="ar_demande_correction_ecarts.paperformat_demande_correction_araymond"/>
         <field name="print_report_name">'Demande_Correction_%s' % (object.name)</field>
         <field name="binding_model_id" ref="model_ar_demande_correction"/>
         <field name="binding_type">report</field>
