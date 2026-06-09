@@ -526,6 +526,132 @@
     padding: 4px 10px;
 }
 
+.ar_dc_kanban {
+    background: radial-gradient(circle at 10% 0%, rgba(23, 107, 116, 0.12), transparent 28%), #f5f7f8;
+
+    .o_kanban_record {
+        padding: 8px;
+    }
+
+    .ar_request_card {
+        position: relative;
+        padding: 0;
+        border: 1px solid #dfe7ec;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 12px 30px rgba(22, 33, 44, 0.08);
+        overflow: hidden;
+        transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    .ar_request_card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 42px rgba(22, 33, 44, 0.14);
+    }
+
+    .ar_card_topline {
+        height: 5px;
+        background: #176b74;
+    }
+
+    .ar_state_n1 .ar_card_topline,
+    .ar_state_sup_log .ar_card_topline,
+    .ar_state_msc .ar_card_topline,
+    .ar_state_mfin .ar_card_topline,
+    .ar_state_md .ar_card_topline,
+    .ar_state_v5 .ar_card_topline,
+    .ar_state_sap_regularization .ar_card_topline {
+        background: #b77a23;
+    }
+
+    .ar_state_valide .ar_card_topline {
+        background: #3f7d58;
+    }
+
+    .ar_state_refuse .ar_card_topline {
+        background: #b23b3b;
+    }
+
+    .ar_card_header,
+    .ar_card_person,
+    .ar_card_meta,
+    .ar_card_dates {
+        padding: 14px 16px;
+    }
+
+    .ar_card_header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #edf1f4;
+    }
+
+    .ar_card_ref {
+        display: block;
+        color: #667483;
+        font-size: 12px;
+        font-weight: 750;
+    }
+
+    .ar_card_title {
+        display: block;
+        margin-top: 4px;
+        color: #16212c;
+        font-size: 15px;
+        line-height: 1.25;
+    }
+
+    .ar_card_state {
+        align-self: flex-start;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #eef4f5;
+        color: #176b74;
+        font-size: 12px;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+    .ar_card_person {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .ar_card_avatar {
+        display: grid;
+        place-items: center;
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #eaf4f2;
+        color: #176b74;
+    }
+
+    .ar_card_label {
+        display: block;
+        color: #667483;
+        font-size: 11px;
+        font-weight: 750;
+        text-transform: uppercase;
+    }
+
+    .ar_card_meta,
+    .ar_card_dates {
+        display: grid;
+        gap: 8px;
+        color: #4d5b66;
+        font-size: 12px;
+    }
+
+    .ar_card_meta i,
+    .ar_card_dates i {
+        color: #176b74;
+        width: 14px;
+    }
+}
+
 .modal .ar_dc_decision_wizard {
     padding: 0;
 }
