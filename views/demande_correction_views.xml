@@ -5,7 +5,8 @@
     <field name="name">ar.demande.correction.list</field>
     <field name="model">ar.demande.correction</field>
     <field name="arch" type="xml">
-      <list decoration-success="state == 'valide'"
+      <list class="ar_dc_responsive_list"
+            decoration-success="state == 'valide'"
             decoration-danger="state == 'refuse'"
             decoration-info="state in ['n1', 'sup_log', 'msc', 'mfin', 'md', 'v5', 'sap_regularization']"
             decoration-muted="state == 'draft'">
