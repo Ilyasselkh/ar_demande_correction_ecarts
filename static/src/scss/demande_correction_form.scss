@@ -6,8 +6,9 @@
 .o_form_view:has(.ar_demande_correction_sheet) .o_form_view_container,
 .o_form_view:has(.ar_demande_correction_sheet) .o_form_renderer,
 .o_form_view:has(.ar_demande_correction_sheet) .o_form_sheet_bg {
-    max-width: none !important;
-    width: 100% !important;
+    box-sizing: border-box;
+    max-width: 100% !important;
+    min-width: 0 !important;
 }
 
 .o_form_view.ar_demande_correction_form {
@@ -28,6 +29,9 @@
     --ar-border: #d9e2ec;
 
     background: linear-gradient(180deg, #f3f8fb 0%, #f7f9fc 36%, #ffffff 100%);
+    height: 100%;
+    max-width: none !important;
+    width: 100% !important;
 
     .o_form_statusbar {
         padding: 10px 16px;
@@ -89,31 +93,67 @@
 .o_form_view.ar_demande_correction_form .o_form_sheet_bg,
 .o_form_view:has(.ar_demande_correction_sheet) .o_form_sheet_bg {
     flex: 1 1 auto !important;
+    min-width: 0 !important;
 }
 
 .o_form_view.ar_demande_correction_form .o_form_sheet_bg {
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.06), rgba(20, 184, 166, 0.10) 34%, rgba(244, 114, 182, 0.06) 72%),
-        #f6f8fb;
+    background: transparent;
+    overflow-x: hidden;
+    padding: 24px !important;
 }
 
 .o_form_view.ar_demande_correction_form .o_form_sheet_bg > .o_form_sheet,
 .o_form_view .o_form_sheet_bg > .o_form_sheet.ar_demande_correction_sheet,
 .o_form_view:has(.ar_demande_correction_sheet) .o_form_sheet_bg > .o_form_sheet {
+    box-sizing: border-box;
+    margin: 0 auto !important;
     max-width: none !important;
-    width: 100% !important;
+    min-height: 100%;
+    min-width: 0 !important;
+    overflow: visible;
+    width: calc(100% - 32px) !important;
 }
 
 .o_form_view.ar_demande_correction_form {
     .ar_sortie_caisse_sheet,
     .ar_demande_correction_sheet {
+        box-sizing: border-box;
+        max-width: none !important;
+        min-width: 0;
         position: relative;
+        width: calc(100% - 32px) !important;
         padding: 30px 34px 32px !important;
         border: 1px solid rgba(174, 190, 211, 0.72);
         border-radius: 8px;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 254, 255, 0.98) 100%);
         box-shadow: 0 20px 48px rgba(23, 32, 51, 0.1), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-        overflow: visible;
+        max-height: calc(100vh - 150px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+    }
+
+    .ar_sortie_caisse_sheet::-webkit-scrollbar,
+    .ar_demande_correction_sheet::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .ar_sortie_caisse_sheet::-webkit-scrollbar-track,
+    .ar_demande_correction_sheet::-webkit-scrollbar-track {
+        background: rgba(231, 237, 244, 0.75);
+        border-radius: 999px;
+    }
+
+    .ar_sortie_caisse_sheet::-webkit-scrollbar-thumb,
+    .ar_demande_correction_sheet::-webkit-scrollbar-thumb {
+        background: rgba(15, 118, 110, 0.42);
+        border: 2px solid rgba(231, 237, 244, 0.75);
+        border-radius: 999px;
+    }
+
+    .ar_sortie_caisse_sheet::-webkit-scrollbar-thumb:hover,
+    .ar_demande_correction_sheet::-webkit-scrollbar-thumb:hover {
+        background: rgba(15, 118, 110, 0.62);
     }
 
     .ar_sortie_caisse_sheet.ar_sc_ready {
@@ -137,6 +177,8 @@
         grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
         align-items: stretch;
         gap: 22px;
+        max-width: 100%;
+        min-width: 0;
         margin: 0 0 24px;
         padding: 4px 0 24px;
         border-bottom: 1px solid var(--ar-sc-line);
@@ -276,8 +318,22 @@
         margin-bottom: 6px;
     }
 
+    .ar_dc_amount_value {
+        align-items: baseline;
+        display: flex;
+        gap: 7px;
+        min-width: 0;
+        position: relative;
+        z-index: 1;
+    }
+
     .ar_sortie_caisse_amount small {
-        margin-top: 6px;
+        color: #ffffff;
+        font-size: 25px;
+        font-weight: 900;
+        line-height: 1;
+        margin-top: 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
     }
 
     .ar_sortie_caisse_amount .o_field_widget,
@@ -296,6 +352,8 @@
         display: grid;
         gap: 18px;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 100%;
+        min-width: 0;
         margin-bottom: 18px;
     }
 
@@ -498,11 +556,15 @@
 
     .ar_dc_full_notebook {
         clear: both;
+        min-width: 0;
+        max-width: 100%;
         width: 100%;
     }
 
     .o_notebook {
+        max-width: 100%;
         margin-top: 0;
+        overflow-x: visible;
     }
 
     .o_notebook .nav-tabs {
@@ -527,9 +589,29 @@
         color: #0f766e;
     }
 
+    .ar_dc_full_notebook .tab-content,
+    .ar_dc_full_notebook .o_notebook_content {
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .ar_dc_full_notebook .tab-pane {
+        background: transparent;
+        box-sizing: border-box;
+        min-height: 100%;
+        overflow: visible;
+        padding-bottom: 0;
+        width: 100%;
+    }
+
     .o_field_widget[name="line_ids"] {
         display: block;
         margin-top: 16px;
+        max-width: 100%;
+        min-width: 0;
     }
 
     .o_field_widget[name="line_ids"] .o_list_renderer {
@@ -537,7 +619,15 @@
         border: 1px solid #dbe4ee;
         border-radius: 8px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        box-sizing: border-box;
+        max-width: 100%;
         overflow: auto;
+        width: 100%;
+    }
+
+    .o_field_widget[name="line_ids"] .o_list_table {
+        min-width: 100%;
+        width: 100%;
     }
 
     .ar_dc_info_grid,
@@ -553,7 +643,15 @@
     .ar_dc_totals {
         background: linear-gradient(135deg, #fff7ed, #ffffff);
         border-color: #fed7aa;
-        margin-top: 18px;
+        box-sizing: border-box;
+        margin: 18px 0 0;
+        max-width: none !important;
+        width: 100%;
+    }
+
+    .ar_dc_totals > .o_group,
+    .ar_dc_totals > .o_inner_group {
+        width: 100%;
     }
 
     .ar_dc_validation_grid {
@@ -779,6 +877,46 @@
     min-width: 112px;
 }
 
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter {
+    height: calc(100vh - 86px);
+    max-height: calc(100vh - 86px);
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter *,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter * {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter::-webkit-scrollbar,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter::-webkit-scrollbar {
+    width: 10px;
+}
+
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter::-webkit-scrollbar-track,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter::-webkit-scrollbar-track {
+    background: rgba(231, 237, 244, 0.75);
+    border-radius: 999px;
+}
+
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter::-webkit-scrollbar-thumb,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter::-webkit-scrollbar-thumb {
+    background: rgba(15, 118, 110, 0.42);
+    border: 2px solid rgba(231, 237, 244, 0.75);
+    border-radius: 999px;
+}
+
+.o_form_view:has(.ar_demande_correction_sheet) .o-mail-Chatter::-webkit-scrollbar-thumb:hover,
+.o_form_view:has(.ar_demande_correction_sheet) .o_Chatter::-webkit-scrollbar-thumb:hover {
+    background: rgba(15, 118, 110, 0.62);
+}
+
 @keyframes arScSheetIn {
     from {
         opacity: 0;
@@ -850,6 +988,15 @@
 
 @media (max-width: 992px) {
     .o_form_view.ar_demande_correction_form {
+        .o_form_sheet_bg {
+            padding: 12px !important;
+        }
+
+        .ar_sortie_caisse_sheet,
+        .ar_demande_correction_sheet {
+            width: 100% !important;
+        }
+
         .o_form_statusbar {
             overflow-x: auto;
             padding: 9px 12px;
@@ -914,7 +1061,10 @@
 
         .ar_sortie_caisse_sheet,
         .ar_demande_correction_sheet {
+            max-height: calc(100vh - 118px);
+            min-height: auto;
             padding: 20px 16px !important;
+            overflow-y: auto;
             width: 100% !important;
         }
 
@@ -939,6 +1089,7 @@
         }
 
         .ar_sortie_caisse_amount .o_field_widget,
+        .ar_sortie_caisse_amount small,
         .ar_sortie_caisse_amount input {
             font-size: 23px;
         }
@@ -989,6 +1140,10 @@
             overflow-x: auto;
         }
 
+        .o_field_widget[name="line_ids"] .o_list_table {
+            min-width: 760px;
+        }
+
         .ar_dc_info_grid,
         .ar_dc_validation_grid,
         .ar_dc_totals {
@@ -1032,6 +1187,9 @@
 
         .ar_sortie_caisse_sheet,
         .ar_demande_correction_sheet {
+            max-height: calc(100vh - 118px);
+            min-height: auto;
+            overflow-y: auto;
             padding: 16px 12px !important;
             border-radius: 7px;
         }
@@ -1057,6 +1215,7 @@
         }
 
         .ar_sortie_caisse_amount .o_field_widget,
+        .ar_sortie_caisse_amount small,
         .ar_sortie_caisse_amount input {
             font-size: 21px;
         }

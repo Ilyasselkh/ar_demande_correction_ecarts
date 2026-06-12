@@ -108,7 +108,7 @@
                   invisible="is_demandeur or state in ['draft', 'sap_regularization', 'valide', 'refuse']"/>
         </header>
 
-        <sheet class="ar_demande_correction_sheet ar_sortie_caisse_sheet" style="max-width: none; width: calc(100% - 32px);">
+        <sheet class="ar_demande_correction_sheet ar_sortie_caisse_sheet">
           <field name="is_demandeur" invisible="True"/>
           <field name="is_sap_regularizer" invisible="True"/>
 
@@ -121,8 +121,10 @@
             </div>
             <div class="ar_sortie_caisse_amount">
               <span>Valeur demandee</span>
-              <field name="total_mad" readonly="True" nolabel="1"/>
-              <small>DH</small>
+              <div class="ar_dc_amount_value">
+                <field name="total_mad" readonly="True" nolabel="1"/>
+                <small>DH</small>
+              </div>
             </div>
           </div>
 
