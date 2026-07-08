@@ -5,7 +5,7 @@ access_ar_regle_validation_ar_ecarts_admin,ar.regle.validation ar ecarts admin,m
 access_ar_regle_validation_param,ar.regle.validation param,model_ar_regle_validation,ar_demande_correction_ecarts.group_ar_ecarts_param,1,1,1,0
 
 access_ar_demande_correction_user,ar.demande.correction user,model_ar_demande_correction,base.group_user,1,1,1,0
-access_ar_demande_correction_line_user,ar.demande.correction.line user,model_ar_demande_correction_line,base.group_user,1,1,1,0
+access_ar_demande_correction_line_user,ar.demande.correction.line user,model_ar_demande_correction_line,base.group_user,1,1,1,1
 access_ar_demande_correction_decision_wizard_user,ar.demande.correction.decision.wizard user,model_ar_demande_correction_decision_wizard,base.group_user,1,1,1,1
 
 access_ar_demande_correction_doc_read,ar.demande.correction.documentation read,model_ar_demande_correction_documentation,base.group_user,1,0,0,0
